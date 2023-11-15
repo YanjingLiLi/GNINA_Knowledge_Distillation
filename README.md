@@ -1,8 +1,6 @@
 # GNINA Konwledge Distillation
 
-This is the repository for knowledge distillation of [GNINA](https://github.com/gnina/gnina). 
-
-The paper can be found at: 
+This is the repository for knowledge distillation of [GNINA](https://jcheminf.biomedcentral.com/articles/10.1186/s13321-021-00522-2). Ensemble knowledge distillation transfers the knowledge learned by multiple teacher models to a single student model by minimizing the discrepancy between the outputs of the teachers and the student. Here, the objective is to leverage ensemble knowledge distillation to condense knowledge from the ensemble model into a single model, resulting in shorter running times while maintaining or improving performance compared to a single scoring function model.
 
 ## Environment 
 The pipeline is implemented in Python 3.9 and Pytorch. 
@@ -16,7 +14,7 @@ Some packages are required:
 Besides, [GNINA](https://github.com/gnina/gnina) should be installed following their official guide for benchmarking purposes.
 
 ## Data
-Training data of General_Default2018 models and testing data can be downloaded here:
+Training data of General_Default2018 models, testing data, and other required files  can be downloaded [here](https://drive.google.com/file/d/1aufWjRDSoVafTTK7mMUh2FfOqpyDEahN/view?usp=drive_link).
 
 Training data of Redock_Default2018, Crossdock_Default2018, and Dense models can be downloaded via:
 ```
@@ -79,7 +77,7 @@ python KD_pipeline.py --teacher_models general_default2018.caffemodel.pt general
 
 ## Benchmark the distillation using GNINA
 ### Data
-The benchmark is performed on two types of data: Redocking and Crossdocking. The details can be found in the paper.
+The benchmark is performed on two types of data: Redocking and Crossdocking, as described in GNINA.
 
 PDBbind_refined_2019 for Redocking can be downloaded [here](http://www.pdbbind.org.cn/).
 [Wierbowski data](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6933848/) for Crossdocking can be downloaded [here]()
@@ -133,4 +131,13 @@ python coalescer.py --dirlist cd_dirs.txt --suffix SUFFIX --dataroot wierbowski_
 SUFFIX is what we used in step 2.
 
 5. Evaluate the performance
+To get the Top1 performance on Redocking:
+```
+python benchmark/MakeReDockCSVs.py --input folder --output Redocking_Top1.csv
+```
+
+To get the Top1 performance on Redocking:
+```
+python benchmark/MakeCrossDockCSVs.py --input folder --output Redocking_Top1.csv
+```
 
