@@ -81,7 +81,7 @@ Files needed to train different types of model:
 Example command for distilling General_Default2018 models into a single Default2018 model:
 
 ```
-python KD_pipeline.py --teacher_models general_default2018.caffemodel.pt general_default2018_2.caffemodel.pt general_default2018_3.caffemodel.pt general_default2018_4.caffemodel.pt --trligte gen2_docked_uff_lig.molcache2 --trrecte gen2_docked_uff_rec.molcache2 --trainfile stratify_gen_uff_train0.types --teligte soup_validation_lig.molcache2 --terecte soup_validation_rec.molcache2 --testfile soup_validation.types --reduced_test gen_uff_train0.types --student_arch Default2018 --step_when 88 --step_end_cnt 4 --output /user/GNINA_KD
+python script/KD_pipeline.py --teacher_models general_default2018.caffemodel.pt general_default2018_2.caffemodel.pt general_default2018_3.caffemodel.pt general_default2018_4.caffemodel.pt --trligte gen2_docked_uff_lig.molcache2 --trrecte gen2_docked_uff_rec.molcache2 --trainfile stratify_gen_uff_train0.types --teligte soup_validation_lig.molcache2 --terecte soup_validation_rec.molcache2 --testfile soup_validation.types --reduced_test gen_uff_train0.types --student_arch Default2018 --step_when 88 --step_end_cnt 4 --output /user/GNINA_KD
 ```
 
 ## Benchmark the distillation using GNINA
@@ -97,7 +97,7 @@ To evaluate the distilled `.pt` model using GNINA, we first need to convert it b
 
 Usage:
 ```
-python pytorch_to_caffe.py -I *.pt -O *.caffemodel -A default2018/dense
+python script/pytorch_to_caffe.py -I *.pt -O *.caffemodel -A default2018/dense
 ```
 
 2. Run GNINA
@@ -108,20 +108,20 @@ For Redocking data, use commands like
 gnina -r PDBbind_refined_2019/5IHH/5IHH_PRO.pdb.gz -l PDBbind_refined_2019/5IHH/5IHH_LIG.sdf.gz --autobox_ligand PDBbind_refined_2019/5IHH/5IHH_LIG.sdf.gz --cnn_scoring rescore --cpu 1 --seed 420 --out PDBbind_refined_2019/5IHH/5IHH_SUFFIX.sdf.gz --cnn_weights MODEL.caffemodel --cnn_model default2018.model
 ```
 
-For Crossdocking data, use commanes like
+For Crossdocking data, use commands like
 ```
 gnina -r wierbowski_cd/AOFB/2C64_PRO.pdb -l wierbowski_cd/AOFB/2XFN_LIG_aligned.sdf --autobox_ligand wierbowski_cd/AOFB/2C64_LIG_aligned.sdf --cnn_scoring rescore --cpu 1 --seed 420 --out wierbowski_cd/AOFB/2C64_PRO_2XFN_LIG_SUFFIX.sdf.gz --cnn_weights MODEL.caffemodel --cnn_model default2018.model
 ```
 
-Users should change SUFFIX in the `--out` and `--cnn_weights` for specific distilled models. Beside, --cnn_model should be changed based on whether the distilled model is Default2018 or Dense architecture.
+Users should change SUFFIX in the `--out` and `--cnn_weights` for specific distilled models. Besides, --cnn_model should be changed based on whether the distilled model is Default2018 or Dense architecture.
 
-Two examples `.txt` files are provides, which should contain the GNINA commands for all the samples. These `.txt` files are also required for further steps.
+Two examples `.txt` files are provided, which should contain the GNINA commands for all the samples. These `.txt` files are also required for further steps.
 
 3. Collect the docking performance
 Run the following commands to automatically get the performance of all docking jobs:
 
 ```
-python obrms_calc.py --input *.txt --dirname PDBbind_refined_2019/ --getscores
+python script/obrms_calc.py --input *.txt --dirname PDBbind_refined_2019/ --getscores
 ```
 
 where `--input` should be replaced with the actual `.txt` file used in the previous step and `--dirname` should use corresponding datasets (PDBbind_refined_2019/ or wierbowski_cd/)
@@ -129,12 +129,12 @@ where `--input` should be replaced with the actual `.txt` file used in the previ
 4. Generate CSV format file
 For Redocking task, use
 ```
-python coalescer.py --dirlist rd_dirs.txt --suffix SUFFIX --dataroot PDBbind_refined_2019 --outfilename Redocking.csv --getscores
+python script/coalescer.py --dirlist rd_dirs.txt --suffix SUFFIX --dataroot PDBbind_refined_2019 --outfilename Redocking.csv --getscores
 ```
 
 For Crossdocking task, use
 ```
-python coalescer.py --dirlist cd_dirs.txt --suffix SUFFIX --dataroot wierbowski_cd --outfilename Crossdocking.csv --getscores
+python script/coalescer.py --dirlist cd_dirs.txt --suffix SUFFIX --dataroot wierbowski_cd --outfilename Crossdocking.csv --getscores
 ```
 
 SUFFIX is what we used in step 2.
@@ -142,11 +142,11 @@ SUFFIX is what we used in step 2.
 5. Evaluate the performance
 To get the Top1 performance on Redocking:
 ```
-python benchmark/MakeReDockCSVs.py --input folder --output Redocking_Top1.csv
+python script/MakeReDockCSVs.py --input folder --output Redocking_Top1.csv
 ```
 
 To get the Top1 performance on Redocking:
 ```
-python benchmark/MakeCrossDockCSVs.py --input folder --output Redocking_Top1.csv
+python script/MakeCrossDockCSVs.py --input folder --output Redocking_Top1.csv
 ```
 
