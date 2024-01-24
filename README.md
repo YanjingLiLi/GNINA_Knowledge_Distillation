@@ -1,5 +1,7 @@
 # GNINA Konwledge Distillation
 
+This repository is still under construction.
+
 This is the repository for knowledge distillation (KD) of [GNINA](https://jcheminf.biomedcentral.com/articles/10.1186/s13321-021-00522-2). GNINA is a docking tool modeling protein and ligand as grids in 3D space using [libmolgrid](https://pubs.acs.org/doi/10.1021/acs.jcim.9b01145) and using CNN as the scoring function. 
 
 Ensemble knowledge distillation transfers the knowledge learned by multiple teacher models to a single student model by minimizing the discrepancy between the outputs of the teachers and the student. Here, the objective is to leverage ensemble knowledge distillation to condense knowledge from the finetuned ensemble model used in GNINA into a single model, resulting in shorter running times while maintaining or improving performance compared to a single scoring function model.
