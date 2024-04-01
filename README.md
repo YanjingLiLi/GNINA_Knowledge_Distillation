@@ -1,8 +1,6 @@
 # GNINA Knowledge Distillation
 
-This repository is still under construction.
-
-This is the repository for the paper "Condensing Molecular Docking CNNs via Knowledge Distillation". Where knowledge distillation (KD) is used to condense the pose ranking power of ensembles of CNN models into a single model. We use the CNN models from [GNINA](https://github.com/gnina/gnina), an open-source docking tool modeling protein and ligand as grids in 3D space using [libmolgrid](https://pubs.acs.org/doi/10.1021/acs.jcim.9b01145) and using CNN as the scoring function. 
+This is the repository for the paper ["Condensing Molecular Docking CNNs via Knowledge Distillation"](https://doi.org/10.26434/chemrxiv-2024-0jh8g). Where knowledge distillation (KD) is used to condense the pose ranking power of ensembles of CNN models into a single model. We use the CNN models from [GNINA](https://github.com/gnina/gnina), an open-source docking tool modeling protein and ligand as grids in 3D space using [libmolgrid](https://github.com/gnina/libmolgrid) and using CNN as the scoring function. 
 
 Ensemble KD transfers the knowledge learned by multiple teacher models to a single student model by minimizing the discrepancy between the outputs of the teachers and the student. Here, the objective is to leverage ensemble knowledge distillation to condense knowledge from the finetuned ensemble model used in GNINA into a single model, resulting in shorter running times while maintaining or improving performance compared to a single scoring function model.
 
