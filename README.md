@@ -134,8 +134,8 @@ To get the Top1 performance on Redocking:
 python script/MakeReDockCSVs.py --input folder --output Redocking_Top1.csv
 ```
 
-To get the Top1 performance on Redocking:
+To get the Top1 performance on Crossdocking:
 ```
-python script/MakeCrossDockCSVs.py --input folder --output Redocking_Top1.csv
+python script/MakeCrossDockCSVs.py --input folder --output Crossdocking_Top1.csv
 ```
 

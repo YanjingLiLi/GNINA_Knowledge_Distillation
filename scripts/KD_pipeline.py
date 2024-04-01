@@ -13,7 +13,7 @@ from torch import autograd
 
 from scipy.stats import pearsonr
 from sklearn import metrics
-from affinity_loss import AffinityLoss
+from .affinity_loss import AffinityLoss
 
 from config import args
 
