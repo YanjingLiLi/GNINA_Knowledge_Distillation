@@ -1,6 +1,6 @@
 import argparse
-from default2018_single_model_modified import Net
-from dense_single_model_modified import Dense
+from .default2018_single_model_modified import Net
+from .dense_single_model_modified import Dense
 import os
 import molgrid
 
@@ -15,7 +15,7 @@ from scipy.stats import pearsonr
 from sklearn import metrics
 from .affinity_loss import AffinityLoss
 
-from config import args
+from .config import args
 
 def get_logits(model, sample):
     model.eval()
@@ -162,22 +162,15 @@ if __name__ == "__main__":
     for i in weights:
         if "default" in i:
             teacher_model = Net(dims, args)
-            teacher_model.to('cuda:0')
-            pretrained_state_dict = torch.load(i)
-            model_dict = teacher_model.state_dict()
-            pretrained_dict = {k: v for k, v in pretrained_state_dict.items() if k in model_dict}
-            model_dict.update(pretrained_dict)
-            teacher_model.load_state_dict(model_dict)
-            weighted_models.append(teacher_model)
         elif "dense" in i:
             teacher_model = Dense(dims)
-            teacher_model.to('cuda:0')
-            pretrained_state_dict = torch.load(i)
-            model_dict = teacher_model.state_dict()
-            pretrained_dict = {k: v for k, v in pretrained_state_dict.items() if k in model_dict}
-            model_dict.update(pretrained_dict)
-            teacher_model.load_state_dict(model_dict)
-            weighted_models.append(teacher_model)
+        teacher_model.to('cuda:0')
+        pretrained_state_dict = torch.load(i)
+        model_dict = teacher_model.state_dict()
+        pretrained_dict = {k: v for k, v in pretrained_state_dict.items() if k in model_dict}
+        model_dict.update(pretrained_dict)
+        teacher_model.load_state_dict(model_dict)
+        weighted_models.append(teacher_model)
 
     input_tensor_1 = torch.zeros(tensor_shape, dtype=torch.float32, device='cuda')
     input_tensor_2 = torch.zeros(tensor_shape, dtype=torch.float32, device='cuda')
