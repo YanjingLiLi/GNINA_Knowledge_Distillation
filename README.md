@@ -1,20 +1,14 @@
-# GNINA Konwledge Distillation
+# GNINA Knowledge Distillation
 
-This repository is still under construction.
+This is the repository for the paper ["Condensing Molecular Docking CNNs via Knowledge Distillation"](https://doi.org/10.26434/chemrxiv-2024-0jh8g). Where knowledge distillation (KD) is used to condense the pose ranking power of ensembles of CNN models into a single model. We use the CNN models from [GNINA](https://github.com/gnina/gnina), an open-source docking tool modeling protein and ligand as grids in 3D space using [libmolgrid](https://github.com/gnina/libmolgrid) and using CNN as the scoring function. 
 
-This is the repository for knowledge distillation (KD) of [GNINA](https://jcheminf.biomedcentral.com/articles/10.1186/s13321-021-00522-2). GNINA is a docking tool modeling protein and ligand as grids in 3D space using [libmolgrid](https://pubs.acs.org/doi/10.1021/acs.jcim.9b01145) and using CNN as the scoring function. 
+Ensemble KD transfers the knowledge learned by multiple teacher models to a single student model by minimizing the discrepancy between the outputs of the teachers and the student. Here, the objective is to leverage ensemble knowledge distillation to condense knowledge from the finetuned ensemble model used in GNINA into a single model, resulting in shorter running times while maintaining or improving performance compared to a single scoring function model.
 
-Ensemble knowledge distillation transfers the knowledge learned by multiple teacher models to a single student model by minimizing the discrepancy between the outputs of the teachers and the student. Here, the objective is to leverage ensemble knowledge distillation to condense knowledge from the finetuned ensemble model used in GNINA into a single model, resulting in shorter running times while maintaining or improving performance compared to a single scoring function model.
-
-Architecture in GNINA: Default2018 and Dense.
-![Screenshot](Fig/Default2018.png) ![Screenshot](Fig/Dense.png)
-
-KD pipeline.
-![Screenshot](Fig/KD.png)
+![KD pipeline](Fig/KD.png)
 
 
 ## Environment 
-The pipeline is implemented in Python 3.9 and Pytorch. 
+The pipeline is implemented in Python 3.9 and PyTorch. 
 
 Some packages are required:
 * `torch`
@@ -22,17 +16,11 @@ Some packages are required:
 * `sklearn`
 * `molgrid`
 
-Besides, [GNINA](https://github.com/gnina/gnina) should be installed following their official guide for benchmarking purposes.
+[GNINA](https://github.com/gnina/gnina) should be installed following their official guide for benchmarking purposes.
 
 ## Data
-Training data of General_Default2018 models, testing data, and other required files  can be downloaded [here](https://drive.google.com/file/d/1aufWjRDSoVafTTK7mMUh2FfOqpyDEahN/view?usp=drive_link).
+Training data of the models can be found [here](https://github.com/gnina/models/).
 
-Training data of Redock_Default2018, Crossdock_Default2018, and Dense models can be downloaded via:
-```
-wget https://bits.csb.pitt.edu/files/crossdock2020/crossdock2020_1.3_lig.molcache2
-
-wget https://bits.csb.pitt.edu/files/crossdock2020/crossdock2020_1.3_rec.molcache2
-```
 
 ## Knowledge Distillation Pipeline
 ### Model Conversion
@@ -88,10 +76,9 @@ python script/KD_pipeline.py --teacher_models general_default2018.caffemodel.pt 
 
 ## Benchmark the distillation using GNINA
 ### Data
-The benchmark is performed on two types of data: Redocking and Crossdocking, as described in GNINA.
+The benchmark is performed on two tasks: Redocking and Crossdocking.
 
-PDBbind_refined_2019 for Redocking can be downloaded [here](http://www.pdbbind.org.cn/).
-[Wierbowski data](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6933848/) for Crossdocking can be downloaded [here]()
+Both filtered datasets can be downloaded from [here](https://bits.csb.pitt.edu/files/gnina1.0_paper/). Only the `crossdocked_ds_data.tar.gz` and `redocking_all_data.tar.gz` files are needed to be downloaded and extracted. 
 
 ### Benchmark Pipeline
 1. Model conversion
